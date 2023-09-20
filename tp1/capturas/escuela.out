@@ -1,0 +1,9 @@
+Total de paquetes: 600061.0
+('UNICAST', 34525) | 12.43274 % | 3.00778 bits
+('BROADCAST', 2054) | 12.83453 % | 2.96190 bits
+('UNICAST', 2048) | 67.89493 % | 0.55862 bits
+('UNICAST', 2054) | 0.05766 % | 10.76012 bits
+('BROADCAST', 2048) | 1.74916 % | 5.83720 bits
+('UNICAST', 35020) | 5.03099 % | 4.31301 bits
+Entropía: 1.45867
+Entropía máxima: 19.19475
