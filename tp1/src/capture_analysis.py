@@ -3,16 +3,6 @@ from scapy.all import *
 from sys import argv
 from math import log2
 
-def source_entropy(source):
-	entropy = 0
-	n = sum(source.values())
-	for symbol in source:
-		p = source[symbol] / n
-		i = -log2(p)
-		entropy += p * i
-
-	return entropy
-
 def source_info(source):
     n = sum(source.values())
     print('Total de paquetes:', n)
