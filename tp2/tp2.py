@@ -75,9 +75,10 @@ def obtenerIntersaltosPorIP():
         if ttl != 0:
             coord = obtenerDatosAproximadosDe( _intersaltos_filtrados[ttl][0] ) #( ip, promTTL, promedio salto anterior, coord )
             if "loc" in coord:
-                _intersaltos_filtrados[ttl] = (_intersaltos_filtrados[ttl][0], _intersaltos_filtrados[ttl][1], _intersaltos_filtrados[ttl][1] - _intersaltos_filtrados[ttl_previo][1], coord["loc"]  )
+                print(coord["loc"].split(","))
+                _intersaltos_filtrados[ttl] = (_intersaltos_filtrados[ttl][0], _intersaltos_filtrados[ttl][1], _intersaltos_filtrados[ttl][1] - _intersaltos_filtrados[ttl_previo][1], coord["loc"].split(",")[0], coord["loc"].split(",")[1]) 
             else:
-                _intersaltos_filtrados[ttl] = (_intersaltos_filtrados[ttl][0], _intersaltos_filtrados[ttl][1], _intersaltos_filtrados[ttl][1] - _intersaltos_filtrados[ttl_previo][1], "noLocAv"  )
+                _intersaltos_filtrados[ttl] = (_intersaltos_filtrados[ttl][0], _intersaltos_filtrados[ttl][1], _intersaltos_filtrados[ttl][1] - _intersaltos_filtrados[ttl_previo][1], "noLocAv", "noLocAvc"  )
             ttl_previo = ttl
 
 def obtenerIPsVisitadas():
@@ -122,7 +123,7 @@ def to_csv( aNameContinent ):
         os.remove( nameFile )
     with open( nameFile, 'w', newline='' ) as f:
         writer = csv.writer(f)
-        writer.writerow( ("ttl", "rttMean", "rttPrev", "coord") )
+        writer.writerow( ("ttl", "rttMean", "rttPrev", "latitud", "longitud") )
         for ttl in _intersaltos_filtrados:
             writer.writerow( _intersaltos_filtrados[ttl] )
 
