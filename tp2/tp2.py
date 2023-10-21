@@ -44,6 +44,11 @@ def imprimir(diccionario):
         print(key)
         print('\t', value)
 
+def _mean(list):
+    max_in_list = max(list)
+    sum_in_list = sum(list) - max_in_list
+    return sum_in_list/(len(list) -1)
+
 def obtenerMayorPorPromedio( ttl, intent ): #intent es diccionario { IP, [rtts] }
     #para cada ttl me quedo con la lista de mayor longitud y a esa lista le calculo el promedio.
     #luego, defino en _intersaltos_por_ip[ttl] la tupla <IP, promedio de lista mas larga>
@@ -53,7 +58,7 @@ def obtenerMayorPorPromedio( ttl, intent ): #intent es diccionario { IP, [rtts] 
         max_pair = max(
             ((ip, rtts ) for ip, rtts in intent.items() if ip != 'unans'),
             key=lambda x: len(x[1]),default=None)
-        _intersaltos_por_ip[ttl] = (max_pair[0], mean(max_pair[1]))
+        _intersaltos_por_ip[ttl] = (max_pair[0], _mean(max_pair[1]))
 
 
 def obtenerIntersaltosPorIP():
@@ -101,7 +106,7 @@ def _traceroute_( url_dst ):
             t_f = time()
             rtt = (t_f - t_i) * 1000
 
-            if ans is not None:
+            if ans is not None and ans['ICMP'].type == 11:
                 if ttl not in responses:
                     responses[ttl] = {}
                 responses[ttl].setdefault(ans.src, []).append(rtt)
@@ -112,10 +117,10 @@ def _traceroute_( url_dst ):
 
 
     obtenerIPsVisitadas()
-    imprimir( _ips_recorridas )
+#    imprimir( _ips_recorridas )
     obtenerIntersaltosPorIP()
-    imprimir( _intersaltos_por_ip )
-    imprimir(_intersaltos_filtrados)
+#    imprimir( _intersaltos_por_ip )
+#    imprimir(_intersaltos_filtrados)
 
 def to_csv( aNameContinent ):
     nameFile = aNameContinent + ".csv"
@@ -123,11 +128,12 @@ def to_csv( aNameContinent ):
         os.remove( nameFile )
     with open( nameFile, 'w', newline='' ) as f:
         writer = csv.writer(f)
-        writer.writerow( ("ttl", "rttMean", "rttPrev", "latitud", "longitud") )
+        #writer.writerow( ("ttl", "rttMean", "rttPrev", "latitud", "longitud") )
         for ttl in _intersaltos_filtrados:
             writer.writerow( _intersaltos_filtrados[ttl] )
 
 def main():
+    #_traceroute_('www.harvard.edu')
     for continent in universidades:
         _traceroute_( universidades[continent] )
         to_csv( continent )
